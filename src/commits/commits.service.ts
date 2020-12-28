@@ -36,6 +36,22 @@ export class CommitsService {
         }),
       );
     }
-    return { commit: response };
+    return { commit: response.data };
+  }
+
+  async listBranches({ repo, owner }): Promise<any> {
+    const response = await this.octokit.request(
+      'GET /repos/{owner}/{repo}/branches',
+      { owner, repo },
+    );
+    if (response.status !== 200) {
+      throw new InternalServerErrorException(
+        new ErrorResponse({
+          message: 'Something went wrong getting all commits',
+          trace: response,
+        }),
+      );
+    }
+    return { branches: response.data };
   }
 }

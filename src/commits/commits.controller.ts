@@ -13,12 +13,20 @@ export class CommitsController {
     return await this.commitsService.listCommits({ repo, owner });
   }
 
-  @Get(':ref')
+  @Get('bySha/:ref')
   async getCommit(
     @Param('ref') ref: string,
     @Query('repo') repo: string,
     @Query('owner') owner: string,
   ): Promise<any> {
     return await this.commitsService.getCommit(ref, { repo, owner });
+  }
+
+  @Get('branches')
+  async listBranches(
+    @Query('repo') repo: string,
+    @Query('owner') owner: string,
+  ): Promise<any> {
+    return await this.commitsService.listBranches({ repo, owner });
   }
 }
