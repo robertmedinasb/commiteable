@@ -6,14 +6,10 @@ import { ErrorResponse } from '../helpers/ErrorResponse';
 export class CommitsService {
   octokit = new Octokit();
 
-  async listCommits(): Promise<any> {
+  async listCommits({ repo, owner }): Promise<any> {
     const response = await this.octokit.request(
       'GET /repos/{owner}/{repo}/commits',
-      {
-        mediaType: { format: 'json' },
-        owner: 'robertmedinasb',
-        repo: 'commiteable',
-      },
+      { mediaType: { format: 'json' }, owner, repo },
     );
     if (response.status !== 200) {
       throw new InternalServerErrorException(
@@ -27,14 +23,10 @@ export class CommitsService {
     return { commits: response.data };
   }
 
-  async getCommit(ref: string): Promise<any> {
+  async getCommit(ref: string, { repo, owner }): Promise<any> {
     const response = await this.octokit.request(
       'GET /repos/{owner}/{repo}/commits/{ref}',
-      {
-        owner: 'robertmedinasb',
-        repo: 'commiteable',
-        ref,
-      },
+      { owner, repo, ref },
     );
     if (response.status !== 200) {
       throw new InternalServerErrorException(
